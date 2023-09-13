@@ -1,0 +1,6 @@
+- if something went wrong when install the dotnet-ef => run the dotnet CLI "dotnet build" to see the details of errors
+- want to see more details about information when run code that's add into the ""Logging" element in file dev.json "Microsoft.AspNetCore": "Information"
+
+
+- dotnet new globaljson: create a file json that contain the version of SDK
+API TOKEN: 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
