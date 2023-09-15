@@ -9,6 +9,9 @@ using Microsoft.EntityFrameworkCore;
   => then controller work => send out the http res => DBcontext disposed
 */
 namespace API.Controllers;
+/*
+  We want to send a req from Angular to hit this controller and come to endpoint to get a list of users or get user by id => display them inside our browser
+*/
 [ApiController]
 [Route("api/[controller]")] // https://localhost:5000/api/users
 public class UsersController : ControllerBase
