@@ -1,5 +1,6 @@
 ﻿using API.Data;
 using API.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,9 +13,12 @@ namespace API.Controllers;
 /*
   We want to send a req from Angular to hit this controller and come to endpoint to get a list of users or get user by id => display them inside our browser
 */
-[ApiController]
-[Route("api/[controller]")] // https://localhost:5000/api/users
-public class UsersController : ControllerBase
+[Authorize] // when user is authorized => user be allowed access to endpoint 
+/*
+Authorize can be set on controller-level => AllowAnonymous can be set in side controller 
+=> AllowAnonymous put at the controller-level => Authorize can not be put in side controller
+*/
+public class UsersController : BaseApiController
 {
   private readonly DataContext _context;
 
@@ -24,6 +28,7 @@ public class UsersController : ControllerBase
     _context = context;
   }
   // API endpoint 
+  [AllowAnonymous]
   [HttpGet] // Get /api/users
   public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
   {

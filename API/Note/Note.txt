@@ -12,6 +12,10 @@ API TOKEN: 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
   {
     opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
   });
+
+  - Using the command "dotnet ef database update" to update database each time the DB have change
+  - Using the command "dotnet ef migrations remove" to remove the migration latest version
+  
                                                 --ANGULAR CLI--
 ng serve to run server
 - Each Angular application has to have at least one MODULE FILE that is DECORATED with the  @NgModule
