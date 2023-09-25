@@ -1,6 +1,10 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { AccountService } from './_services/account.service';
+import { User } from './_models/user';
 
+/*
+  ng g : ng is for access into Angular CLI and g is generate
+*/
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -10,15 +14,20 @@ export class AppComponent implements OnInit {
   title: string = 'Dating App';
   // need something to store users in
   users: any;
-  constructor(private http: HttpClient) {}
+
+  constructor(private accountService: AccountService) {}
+
   ngOnInit(): void {
     /*
      inside here we're going to make a req to our API server 
   */
-    this.http.get('https://localhost:5000/api/users').subscribe({
-      next: (response) => (this.users = response), // right now type of users is a list of users
-      error: (error) => console.log(error), //callback function to do something wrong (Write log into console went wrong  )
-      complete: () => console.log('Request has completed'),
-    });
+    this.setCurrentUser();
+  }
+
+  setCurrentUser() {
+    const userString = localStorage.getItem('user');
+    if (!userString) return;
+    const user: User = JSON.parse(userString);
+    this.accountService.setCurrentUser(user);
   }
 }
