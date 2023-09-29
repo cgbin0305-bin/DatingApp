@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../_services/account.service';
 import { Observable, of } from 'rxjs';
 import { User } from '../_models/user';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 /* 
   when the component move away to another component => what ever stored  in memory for that component is gone 
@@ -17,7 +19,11 @@ export class NavComponent implements OnInit {
   // loggedIn = false;
   // currentUser$: Observable<User | null> = of(null); change the constructor to public then use currentUser$ in account service
 
-  constructor(public accountService: AccountService) {}
+  constructor(
+    public accountService: AccountService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {
     // this.getCurrentUser();
@@ -36,16 +42,15 @@ export class NavComponent implements OnInit {
   login() {
     this.accountService.login(this.model).subscribe({
       // when the login method is done, we are no longer subscribe it => not essential to unsubscribe it
-      next: (response) => {
-        console.log(response);
-        // this.loggedIn = true;
-      },
-      error: (error) => console.log(error),
+      next: () => this.router.navigateByUrl('/members'),
+      // this.loggedIn = true;
+      error: (error) => this.toastr.error(error.error),
     });
   }
 
   logout() {
     this.accountService.logout();
+    this.router.navigateByUrl('/');
     // this.loggedIn = false;
   }
 }

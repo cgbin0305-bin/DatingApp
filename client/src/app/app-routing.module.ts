@@ -1,10 +1,32 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
-const routes: Routes = [];
+import { HomeComponent } from './home/home.component';
+import { MemberListComponent } from './members/member-list/member-list.component';
+import { MemberDetailComponent } from './members/member-detail/member-detail.component';
+import { ListsComponent } from './lists/lists.component';
+import { MessagesComponent } from './messages/messages.component';
+import { authGuard } from './_guards/auth.guard';
+// routes array is being passed to the router module for root specifies what's contained inside this variable
+const routes: Routes = [
+  { path: '', component: HomeComponent },
+  {
+    path: '',
+    runGuardsAndResolvers: 'always',
+    canActivate: [authGuard],
+    // auth guard all the path in the children property
+    children: [
+      { path: 'members', component: MemberListComponent },
+      { path: 'members/:id  ', component: MemberDetailComponent }, // :id represent route parameter
+      { path: 'lists', component: ListsComponent },
+      { path: 'messages', component: MessagesComponent },
+      { path: 'members', component: MemberListComponent },
+    ],
+  },
+  { path: '**', component: HomeComponent, pathMatch: 'full' },
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
