@@ -1,7 +1,5 @@
-using System.Text;
 using API.Extensions;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
+using API.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,8 +11,10 @@ builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.IdentityServices(builder.Configuration);
 
 var app = builder.Build();
-
-app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200")); // allow to send API server to the web
+app.UseMiddleware<ExceptionMiddleware>();
+app.UseCors(builder => builder.AllowAnyHeader()
+                              .AllowAnyMethod()
+                              .WithOrigins("https://localhost:4200")); // allow to send API server to the web
 
 // using Authentication middleware before the MapController and after UseCors
 app.UseAuthentication();// Do you have a valid token ?

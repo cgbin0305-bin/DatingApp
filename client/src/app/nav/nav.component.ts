@@ -44,7 +44,7 @@ export class NavComponent implements OnInit {
       // when the login method is done, we are no longer subscribe it => not essential to unsubscribe it
       next: () => this.router.navigateByUrl('/members'),
       // this.loggedIn = true;
-      error: (error) => this.toastr.error(error.error),
+      // error: (error) => this.toastr.error(error.error),
     });
   }
 
