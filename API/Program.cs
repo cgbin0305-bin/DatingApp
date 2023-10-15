@@ -1,5 +1,7 @@
+using API.Data;
 using API.Extensions;
 using API.Middleware;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,4 +24,20 @@ app.UseAuthentication();// Do you have a valid token ?
 app.UseAuthorization(); // Ok you have a valid token => what are you allowed to do?
 app.MapControllers();
 
+
+// Dotnet CLI can help us to create DB (can use in code at Program.cs)
+using var scope = app.Services.CreateScope(); // this is going to give us access to all of the services that we have inside program class
+var services = scope.ServiceProvider;
+try
+{
+  var context = services.GetRequiredService<DataContext>();
+  await context.Database.MigrateAsync();
+  await Seed.SeedUser(context);
+}
+catch (System.Exception ex)
+{
+
+  var logger = services.GetService<ILogger<Program>>();
+  logger.LogError(ex, "An error occurred during migration");
+}
 app.Run();
